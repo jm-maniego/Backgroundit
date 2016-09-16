@@ -1,0 +1,33 @@
+{
+    "manifest_version": 2,
+    // LOL
+    "name": "Backgroundify",
+    "description": "Wallpapers everywhere!!",
+
+    "version": "1.0",
+
+    "permissions": [
+      "file:///*",
+      "tabs",
+      "storage",
+      "http://*.wallhaven.cc/",
+      "https://*.wallhaven.cc/"
+    ],
+    "background": {
+      "scripts": [
+        "common.js",
+        "background.js"
+      ],
+      "persistent": false
+    },
+    "browser_action": {
+      "default_popup": "popup.html"
+    },
+    "options_page": "options.html",
+    "content_scripts": [
+      {
+        "matches": ["<all_urls>"],
+        "js": ["lib/jquery.js", "src/common.js", "content_scripts/js/main.js"]
+      }
+    ]
+}
