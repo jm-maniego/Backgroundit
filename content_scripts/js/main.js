@@ -33,13 +33,13 @@ Backgroundify.WallpaperView = function(model) {
   }
 
   var _init = function() {
-    var $container = _this.container()
-    $container.prepend('body');
+    var $container = _this.templates.container()
+    $('body').prepend($container);
   }
 
   _this.templates = {
-    _this.container: function() {
-      _this.$el = $('<div>', id: "backgroundify-chromext");
+    container: function() {
+      _this.$el = $('<div>', {id: "backgroundify-chromext"});
       return _this.$el;
     }
   }

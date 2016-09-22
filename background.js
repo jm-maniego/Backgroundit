@@ -13,7 +13,12 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
 var actions = {
   get_wallpaper: function(params, response) {
     response({
-      url: Backgroundify.wallpaper_collection.get_one()
+      wallpaper: Backgroundify.wallpaper_collection.get_one(),
+      settings: {
+        blur: 0,
+        opacity: 1,
+        display: "block"
+      }
     });
   }
 }
@@ -26,7 +31,6 @@ Backgroundify.WallpaperCollection = function() {
   _this.fetch = function() {
     _this.source.fetch({
       success: function(wallpapers) {
-        debugger
         _this.list = wallpapers;
       }
     });

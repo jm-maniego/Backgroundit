@@ -4,8 +4,8 @@
 }
 
 #backgroundify-chromext {
-  background-size: cover;
-  background-color: white;
+  background-size: cover !important;
+  background-color: white !important;
 }
 
 #backgroundify-chromext {
