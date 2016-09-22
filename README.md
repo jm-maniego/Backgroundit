@@ -1,4 +1,4 @@
 # Backgroundify
 Wallpapers everywhere!!
 
-# AKA Site-Background V2
+aka Site-Background V2
