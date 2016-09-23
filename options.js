@@ -5,7 +5,7 @@
       $('#notification').text('Saving...').css({"border-bottom": "1px yellow solid"}).show();
 
       var params = $.deparam($('#backgroundify-form').serialize());
-      chrome.runtime.sendMessage({action: 'save_source_settings', params: params}, function(response) {
+      chrome.runtime.sendMessage({action: 'save_settings', params: params}, function(response) {
         $('#notification').text('Saved!').css({"border-bottom": "1px green solid"}).fadeOut(3200);
       })
     })

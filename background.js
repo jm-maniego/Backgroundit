@@ -19,19 +19,6 @@ Backgroundify.config = {
 }
 Backgroundify.config.wallpaper_settings = Backgroundify.config.defaults.wallpaper_settings
 
-Backgroundify.config.save_source_settings = function(settings, callback) {
-  Backgroundify.config.save_settings({source_settings: settings}, function() {
-    Backgroundify.wallpaper_collection.source.save_settings(settings);
-    callback();
-  });
-}
-Backgroundify.config.save_wallpaper_settings = function(settings, callback) {
-  Backgroundify.config.save_settings({wallpaper_settings: settings}, function() {
-    Backgroundify.config.wallpaper_settings = settings;
-    callback();
-  });
-}
-
 chrome.runtime.onMessage.addListener(function(request, sender, response) {
   var params = {}
   $.extend(params, request.params)
@@ -51,8 +38,9 @@ var actions = {
       }
     });
   },
-  save_source_settings: function(params, response) {
-    Backgroundify.config.save_source_settings(params, function() {
+  save_settings: function(params, response) {
+    Backgroundify.config.save_settings({settings: params}, function() {
+      Backgroundify.wallpaper_collection.source.save_settings(params.source_settings);
       Backgroundify.wallpaper_collection.fetch(response);
     });
   }
@@ -67,7 +55,7 @@ Backgroundify.WallpaperCollection = function() {
     _this.source.fetch({
       success: function(wallpapers) {
         _this.list = wallpapers;
-        callback();
+        callback && callback();
       }
     });
   }
