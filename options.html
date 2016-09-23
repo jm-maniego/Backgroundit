@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Backgroundify Settings</title>
+    <link rel="stylesheet" type="text/css" href="options.css">
+  </head>
+  <body>
+    <div id="notification" style="display:none">
+    </div>
+    <form id="backgroundify-form">
+      <p>
+        <div><h3>Source Settings</h3></div>
+        <div>
+          <input id="url-0" type="radio" name="url" value=0 checked />
+          <label for="url-0">Random</label>
+          <input id="url-1" type="radio" name="url" value=1>
+          <label for="url-1">Search</label>
+        </div>
+      </p>
+
+      <p>
+        <div><h4>Parameters</h4></div>
+        <div>
+          <label for="query-keyword">Keyword</label>
+          <input id="query-keyword" type="text" name="q" placeholder="kitten">
+        </div>
+        <div><h5>Categories</h5></div>
+        <div>
+          <input type="hidden" name="categories[general]" value="0" checked>
+          <input type="hidden" name="categories[anime]" value="0" checked>
+          <input type="hidden" name="categories[people]" value="0" checked>
+
+          <input id="categories_general" type="checkbox" name="categories[general]" value="1" checked>
+          <label for="categories_general" >General</label>
+          <input id="categories_anime" type="checkbox" name="categories[anime]" value="1" checked>
+          <label for="categories_anime" >Anime</label>
+          <input id="categories_people" type="checkbox" name="categories[people]" value="1" checked>
+          <label for="categories_people" >People</label>
+        </div>
+        <div><h5>Purity</h5></div>
+        <div>
+          <input type="hidden" name="purity[sfw]" value="0" checked>
+          <input type="hidden" name="purity[sketchy]" value="0" checked>
+          <input type="hidden" name="purity[nsfw]" value="0" checked>
+
+          <input id="purity_sfw" type="checkbox" name="purity[sfw]" value="1" checked>
+          <label for="purity_sfw" >SFW</label>
+          <input id="purity_sketchy" type="checkbox" name="purity[sketchy]" value="1" checked>
+          <label for="purity_sketchy" >Sketchy</label>
+          <input id="purity_nsfw" type="checkbox" name="purity[nsfw]" value="1" checked>
+          <label for="purity_nsfw" >NSFW</label>
+        </div>
+      </p>
+
+      <p>
+        <input type="submit" name="submit" value="Save">
+      </p>
+    </form>
+
+    <script src="lib/jquery.js"></script>
+    <script src="lib/jquery-deparam.js"></script>
+    <script src="options.js"></script>
+  </body>
+</html>

@@ -1,0 +1,18 @@
+body {
+  padding: 2em;
+  padding-top: 4em;
+}
+
+#notification {
+  height: 2em;
+  left: -1px;
+  margin: 0;
+  padding: 1em;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+label {
+  cursor: pointer;
+}
