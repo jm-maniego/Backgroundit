@@ -7,13 +7,12 @@ Backgroundify.WallpaperModel = function() {
   var _parse_response = function(response) {
     var wallpaper = response.wallpaper;
     _this.url = wallpaper.url;
-
-    // I dont know why I want to delete this :D
-    delete response.wallpaper;
   }
 
   _this.fetch = function(callback) {
+    console.log('Requesting wallpaper...')
     chrome.runtime.sendMessage({action: 'get_wallpaper'}, function(response) {
+      console.log('Requesting wallpaper... done.')
       _parse_response(response);
       _this.on_fetch(_this, response);
     })
@@ -45,6 +44,7 @@ Backgroundify.WallpaperView = function(model) {
   }
 
   _this.attach = function(settings) {
+    console.log('Attaching wallpaper...')
     var wallpaper = _this.model;
     _this.$el.css({
       "background":     "url("+ wallpaper.url +") fixed ",

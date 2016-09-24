@@ -1,0 +1,56 @@
+*, *:before, *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.fluid-container {
+  max-width: 940px;
+  width: 90%;
+  margin: 0 auto;
+  padding-right: 1rem;
+  padding-left: 1rem;
+}
+
+.fluid-container .row:after {
+  content: " ";
+  display: table;
+  clear: both;
+}
+.fluid-container .row {
+  *zoom: 1;
+  margin-right: -1rem;
+  margin-left: -1rem;
+}
+
+.fluid-container .row [class*="col-"] {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin: 0;
+  margin-bottom: 1rem;
+}
+
+.fluid-container .row .row:last-child [class*="col-"] {
+  margin-bottom: 0;
+}
+
+.fluid-container img, img.fluid {
+  width: 100%;
+  height: auto;
+}
+
+.fluid-container .row [class*="col-"] {
+  float: left;
+}
+.fluid-container .row .col-4 {
+  width: 33.33%;
+}
+.fluid-container .row .col-6 {
+  width: 50%;
+}
+.fluid-container .row .col-8 {
+  width: 66.67%;
+}
+.fluid-container .row .col-12 {
+  width: 100%;
+}

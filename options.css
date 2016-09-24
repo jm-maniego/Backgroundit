@@ -1,18 +1,19 @@
-body {
-  padding: 2em;
-  padding-top: 4em;
-}
-
-#notification {
-  height: 2em;
-  left: -1px;
-  margin: 0;
-  padding: 1em;
-  position: fixed;
-  top: 0;
-  width: 100%;
+html, body {
+  padding: 0;
 }
 
 label {
   cursor: pointer;
+}
+
+.full {
+  width: 100%;
+}
+
+input[type=text] {
+  padding: 1em;
+}
+
+.input {
+  padding-bottom: 1rem;
 }

@@ -5,16 +5,12 @@ Backgroundify.config = {
   save_settings: function(settings, callback) {
     chrome.storage.local.set(settings, callback);
   },
-  init: function() {
-
-  },
   defaults: {
     wallpaper_settings: {
       blur: 0,
       opacity: 1,
       display: "block"
-    },
-    source_settings: {}
+    }
   }
 }
 Backgroundify.config.wallpaper_settings = Backgroundify.config.defaults.wallpaper_settings
@@ -29,20 +25,27 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
 
 var actions = {
   get_wallpaper: function(params, response) {
+    console.log('Getting wallpaper...');
     response({
       wallpaper: Backgroundify.wallpaper_collection.get_one(),
-      settings: {
-        blur: 0,
-        opacity: 1,
-        display: "block"
-      }
+      settings: Backgroundify.config.wallpaper_settings
     });
   },
   save_settings: function(params, response) {
+    console.log('Saving settings...');
     Backgroundify.config.save_settings({settings: params}, function() {
+      console.log('Saving settings... done.');
       Backgroundify.wallpaper_collection.source.save_settings(params.source_settings);
       Backgroundify.wallpaper_collection.fetch(response);
     });
+  },
+  get_settings: function(params, response) {
+    console.log('Getting settings...');
+    response({
+      settings: {
+        source_settings: Backgroundify.wallpaper_collection.source.get_settings()
+      }
+    })
   }
 }
 
@@ -118,7 +121,8 @@ Wallhaven.source = function() {
   var PATTERNS = {
     url: /\.cc\/wallpaper\/([0-9]*)/
   }
-  _this.q = '';
+  _this.url_code = DEFAULTS.url;
+  _this.q = 'kitten';
   _this.categories = new Wallhaven.parameter('categories', {
     general: "1",
     anime: "0",
@@ -131,11 +135,21 @@ Wallhaven.source = function() {
   })
 
   var _init = function() {
-    _this.url = HOME_URL + PATHS[DEFAULTS.url];
+    _this.url = HOME_URL + PATHS[_this.url_code];
+  }
+
+  _this.get_settings = function() {
+    return {
+      url: _this.url_code,
+      q: _this.q,
+      categories: _this.categories.values,
+      purity: _this.purity.values
+    }
   }
 
   _this.save_settings = function(settings) {
-    _this.url = HOME_URL + PATHS[settings.url];
+    _this.url_code = settings.url;
+    _this.url = HOME_URL + PATHS[_this.url_code];
     _this.q = settings.q;
     _this.categories = new Wallhaven.parameter('categories', settings.categories)
     _this.purity = new Wallhaven.parameter('purity', settings.purity)
@@ -179,7 +193,6 @@ Wallhaven.source = function() {
   return _this;
 };
 
-Backgroundify.config.init();
 Sources.Wallhaven = new Wallhaven.source;
 Backgroundify.wallpaper_collection = new Backgroundify.WallpaperCollection();
 Backgroundify.wallpaper_collection.fetch()
