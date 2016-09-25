@@ -4,7 +4,18 @@
       return $.extend({
         animate: "fast",
         change: function(event, ui) {
+          var params = {wallpaper_settings: {}};
+          var key    = $(event.target).data('name');
+          var value  = ui.value;
+          params.wallpaper_settings[key] = value;
 
+          chrome.runtime.sendMessage({action: 'update_wallpaper_settings', params: params}, function(response) {
+            if (response.updated) {
+              chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+                chrome.tabs.sendMessage(tabs[0].id, response.wallpaper_settings);
+              });
+            }
+          })
         }
       }, options)
     }
@@ -16,7 +27,7 @@
         value: settings.blur
       }))
       $('#opacity-slider').slider(slider_options({
-        value: +settings.opacity*100
+        value: settings.opacity
       }))
     })
   });

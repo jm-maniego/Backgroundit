@@ -1,6 +1,12 @@
 var Backgroundify = window.Backgroundify || {};
 var Sources = {};
 var Wallhaven = {};
+Backgroundify.debug = {
+  log_settings: function() {
+    chrome.storage.local.get(function(settings){console.log(settings)});
+  }
+}
+
 Backgroundify.config = {
   save_settings: function(settings, callback) {
     chrome.storage.local.set(settings, callback);
@@ -8,7 +14,7 @@ Backgroundify.config = {
   defaults: {
     wallpaper_settings: {
       blur: 5,
-      opacity: "0.4",
+      opacity: 40,
       display: "block"
     }
   }
@@ -33,7 +39,7 @@ var actions = {
   },
   save_settings: function(params, response) {
     console.log('Saving settings...');
-    Backgroundify.config.save_settings({settings: params}, function() {
+    Backgroundify.config.save_settings(params, function() {
       console.log('Saving settings... done.');
       Backgroundify.wallpaper_collection.source.save_settings(params.source_settings);
       Backgroundify.wallpaper_collection.fetch(response);
@@ -52,6 +58,17 @@ var actions = {
         wallpaper_settings: Backgroundify.config.wallpaper_settings
       }
     })
+  },
+  update_wallpaper_settings: function(params, response) {
+    console.log('Updating wallpaper settings...');
+    $.extend(Backgroundify.config.wallpaper_settings, params.wallpaper_settings);
+    // updated: true.. I don't know why :D
+    Backgroundify.config.save_settings(params, function() {
+      response({
+        updated: true,
+        wallpaper_settings: Backgroundify.config.wallpaper_settings
+      });
+    });
   }
 }
 
