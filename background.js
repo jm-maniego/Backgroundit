@@ -7,8 +7,8 @@ Backgroundify.config = {
   },
   defaults: {
     wallpaper_settings: {
-      blur: 0,
-      opacity: 1,
+      blur: 5,
+      opacity: "0.4",
       display: "block"
     }
   }
@@ -40,10 +40,16 @@ var actions = {
     });
   },
   get_settings: function(params, response) {
-    console.log('Getting settings...');
     response({
       settings: {
         source_settings: Backgroundify.wallpaper_collection.source.get_settings()
+      }
+    })
+  },
+  get_wallpaper_settings: function(params, response) {
+    response({
+      settings: {
+        wallpaper_settings: Backgroundify.config.wallpaper_settings
       }
     })
   }
