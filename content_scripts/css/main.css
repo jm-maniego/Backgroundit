@@ -4,10 +4,6 @@
 }
 
 #backgroundit-chromext {
-  background-size: cover !important;
-}
-
-#backgroundit-chromext {
   position: fixed;
   top: 0;
   bottom: 0;
@@ -18,5 +14,4 @@
 
 #backgroundit-chromext {
   pointer-events: none;
-  -webkit-transform: translateZ(0);
 }

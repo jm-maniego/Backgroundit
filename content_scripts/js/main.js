@@ -68,7 +68,10 @@ Backgroundit.WallpaperView = function(model) {
       "background":     "url("+ _this.model.url +") fixed ",
       "-webkit-filter": "blur("+ wallpaper_settings.blur +"px)",
       "opacity":        opacity,
-      "display":        wallpaper_settings.display
+      "display":        wallpaper_settings.display,
+      "-webkit-transform": "translateZ(0)",
+      "transform": "translateZ(0)",
+      "background-size": "cover"
     })
   }
 

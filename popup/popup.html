@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="css/jquery-ui.structure.min.css">
     <link rel="stylesheet" type="text/css" href="css/jquery-ui.theme.min.css">
     <link rel="stylesheet" type="text/css" href="/content_scripts/css/fluid-grid.css">
+    <link rel="stylesheet" type="text/css" href="/common.css">
     <link rel="stylesheet" type="text/css" href="css/popup.css">
   </head>
   <body>
@@ -15,8 +16,11 @@
     <div class="fluid-container">
       <div class="row">
         <div class="col-12">
-          <input tabindex="-1" id="source_settings_display" type="checkbox" name="source_settings[display]">
-          <label for="source_settings_display">Display</label>
+          <form id="wallpaper_settings_form">
+            <input type="hidden" name="wallpaper_settings[display]" value="none">
+            <input tabindex="-1" id="wallpaper_settings_display" type="checkbox" name="wallpaper_settings[display]" value="block">
+            <label for="wallpaper_settings_display">Display</label>
+          </form>
         </div>
       </div>
       <div class="row">
@@ -36,6 +40,7 @@
     <script src="/common.js"></script>
     <script src="/lib/jquery.js"></script>
     <script src="/lib/jquery-ui.min.js"></script>
+    <script src="/lib/jquery-deparam.js"></script>
     <script src="js/popup.js"></script>
   </body>
 </html>
