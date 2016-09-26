@@ -101,7 +101,7 @@ Backgroundit.WallpaperCollection = function() {
 Wallhaven.home_url  = "https://alpha.wallhaven.cc";
 Wallhaven.wallpaper = function(id) {
   var _this = this;
-  var IMG_PREFIX = "https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-";
+  var IMG_PREFIX = "http://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-";
   var IMG_EXT    = ".jpg";
   var SOURCE_URL = Wallhaven.home_url + "/wallpaper/";
 
