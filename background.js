@@ -1,13 +1,13 @@
-var Backgroundify = window.Backgroundify || {};
+var Backgroundit = window.Backgroundit || {};
 var Sources = {};
 var Wallhaven = {};
-Backgroundify.debug = {
+Backgroundit.debug = {
   log_settings: function() {
     chrome.storage.local.get(function(settings){console.log(settings)});
   }
 }
 
-Backgroundify.config = {
+Backgroundit.config = {
   save_settings: function(settings, callback) {
     chrome.storage.local.set(settings, callback);
   },
@@ -19,7 +19,7 @@ Backgroundify.config = {
     }
   }
 }
-Backgroundify.config.wallpaper_settings = Backgroundify.config.defaults.wallpaper_settings
+Backgroundit.config.wallpaper_settings = Backgroundit.config.defaults.wallpaper_settings
 
 chrome.runtime.onMessage.addListener(function(request, sender, response) {
   var params = {}
@@ -33,46 +33,49 @@ var actions = {
   get_wallpaper: function(params, response) {
     console.log('Getting wallpaper...');
     response({
-      wallpaper: Backgroundify.wallpaper_collection.get_one(),
-      settings: Backgroundify.config.wallpaper_settings
+      wallpaper: Backgroundit.wallpaper_collection.get_one(),
+      settings: Backgroundit.config.wallpaper_settings
     });
   },
   save_settings: function(params, response) {
     console.log('Saving settings...');
-    Backgroundify.config.save_settings(params, function() {
+    Backgroundit.config.save_settings(params, function() {
       console.log('Saving settings... done.');
-      Backgroundify.wallpaper_collection.source.save_settings(params.source_settings);
-      Backgroundify.wallpaper_collection.fetch(response);
+      Backgroundit.wallpaper_collection.source.save_settings(params.source_settings);
+      Backgroundit.wallpaper_collection.fetch(response);
     });
   },
   get_settings: function(params, response) {
     response({
       settings: {
-        source_settings: Backgroundify.wallpaper_collection.source.get_settings()
+        source_settings: Backgroundit.wallpaper_collection.source.get_settings()
       }
     })
   },
-  get_wallpaper_settings: function(params, response) {
-    response({
-      settings: {
-        wallpaper_settings: Backgroundify.config.wallpaper_settings
-      }
+  show_popup: function(params, response) {
+    Backgroundit.query_current_tab({action: "get_current_wallpaper"}, function(content_response) {
+      response({
+        settings: {
+          wallpaper_settings: Backgroundit.config.wallpaper_settings
+        },
+        current_wallpaper: content_response.current_wallpaper
+      })
     })
   },
   update_wallpaper_settings: function(params, response) {
     console.log('Updating wallpaper settings...');
-    $.extend(Backgroundify.config.wallpaper_settings, params.wallpaper_settings);
+    $.extend(Backgroundit.config.wallpaper_settings, params.wallpaper_settings);
     // updated: true.. I don't know why :D
-    Backgroundify.config.save_settings(params, function() {
+    Backgroundit.config.save_settings(params, function() {
       response({
         updated: true,
-        wallpaper_settings: Backgroundify.config.wallpaper_settings
+        wallpaper_settings: Backgroundit.config.wallpaper_settings
       });
     });
   }
 }
 
-Backgroundify.WallpaperCollection = function() {
+Backgroundit.WallpaperCollection = function() {
   var _this = this;
   _this.source = Sources.Wallhaven;
   _this.list   = [];
@@ -95,20 +98,21 @@ Backgroundify.WallpaperCollection = function() {
     return _this.list[_generate_random_int()]
   }
 }
-
+Wallhaven.home_url  = "https://alpha.wallhaven.cc";
 Wallhaven.wallpaper = function(id) {
   var _this = this;
-  var IMG_PREFIX = "http://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-";
+  var IMG_PREFIX = "https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-";
   var IMG_EXT    = ".jpg";
+  var SOURCE_URL = Wallhaven.home_url + "/wallpaper/";
 
-  _this.url = '';
   _this.id  = id;
+  _this.url = IMG_PREFIX + _this.id + IMG_EXT;;
+  _this.source_url = SOURCE_URL + _this.id;
 
-  var _init = function() {
-    _this.url = IMG_PREFIX + _this.id + IMG_EXT;
-  }
+  // var _init = function() {
+  // }
 
-  _init();
+  // _init();
   return this;
 }
 
@@ -133,7 +137,7 @@ Wallhaven.source = function() {
   var _this = this;
   _this.model = Wallhaven.wallpaper;
 
-  var HOME_URL = "https://alpha.wallhaven.cc";
+  var HOME_URL = Wallhaven.home_url;
   var PATHS = [
     "/search",
     "/random"
@@ -217,5 +221,5 @@ Wallhaven.source = function() {
 };
 
 Sources.Wallhaven = new Wallhaven.source;
-Backgroundify.wallpaper_collection = new Backgroundify.WallpaperCollection();
-Backgroundify.wallpaper_collection.fetch()
+Backgroundit.wallpaper_collection = new Backgroundit.WallpaperCollection();
+Backgroundit.wallpaper_collection.fetch()

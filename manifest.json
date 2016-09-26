@@ -1,13 +1,12 @@
 {
     "manifest_version": 2,
 
-    "name": "Backgroundify",
+    "name": "Backgroundit",
     "description": "Wallpapers everywhere!!",
 
     "version": "1.0",
 
     "permissions": [
-      "file:///*",
       "tabs",
       "storage",
       "http://*.wallhaven.cc/",

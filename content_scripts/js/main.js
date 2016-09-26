@@ -1,12 +1,13 @@
-var Backgroundify = window.Backgroundify || {};
+var Backgroundit = window.Backgroundit || {};
 
-Backgroundify.WallpaperModel = function() {
+Backgroundit.WallpaperModel = function() {
   var _this = this;
   _this.url = '';
 
   var _parse_response = function(response) {
     var wallpaper = response.wallpaper;
     _this.url = wallpaper.url;
+    _this.source_url = wallpaper.source_url;
   }
 
   _this.fetch = function(callback) {
@@ -21,7 +22,7 @@ Backgroundify.WallpaperModel = function() {
   _this.on_fetch = function() {}
 }
 
-Backgroundify.WallpaperView = function(model) {
+Backgroundit.WallpaperView = function(model) {
   var _this = this;
   _this.$el   = '';
   _this.model = model;
@@ -38,14 +39,25 @@ Backgroundify.WallpaperView = function(model) {
 
   _this.templates = {
     container: function() {
-      _this.$el = $('<div>', {id: "backgroundify-chromext"});
+      _this.$el = $('<div>', {id: "backgroundit-chromext"});
       return _this.$el;
     }
   }
 
   _this.bind_events = function() {
-    chrome.runtime.onMessage.addListener(function(wallpaper_settings) {
-      _this.update_styles(wallpaper_settings);
+    var actions = {
+      update_styles: function(params, response) {
+        _this.update_styles(params);
+      },
+      get_current_wallpaper: function(params, response) {
+        response({
+          current_wallpaper: _this.model
+        })
+      }
+    }
+    chrome.runtime.onMessage.addListener(function(request, sender, response) {
+      actions[request.action].call(this, request.params, response);
+      return true;
     })
   }
 
@@ -69,7 +81,7 @@ Backgroundify.WallpaperView = function(model) {
   _init();
 }
 
-var wallpaper_model = new Backgroundify.WallpaperModel();
-var wallpaper_view  = new Backgroundify.WallpaperView(wallpaper_model);
+var wallpaper_model = new Backgroundit.WallpaperModel();
+var wallpaper_view  = new Backgroundit.WallpaperView(wallpaper_model);
 
 wallpaper_model.fetch();

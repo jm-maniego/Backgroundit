@@ -1,6 +1,6 @@
 (function($, window, document) {
   $(function() {
-    var $form         = $('#backgroundify-form');
+    var $form         = $('#backgroundit-form');
     var $notification = $('#notification');
 
     chrome.runtime.sendMessage({action: 'get_settings'}, function(response) {
@@ -20,7 +20,7 @@
       e.preventDefault();
       $notification.stop(true, true).text('Saving...').show();
 
-      var params = $.deparam($('#backgroundify-form').serialize());
+      var params = $.deparam($('#backgroundit-form').serialize());
       chrome.runtime.sendMessage({action: 'save_settings', params: params}, function(response) {
         $notification.text('Saved!').fadeOut(3200);
       })
