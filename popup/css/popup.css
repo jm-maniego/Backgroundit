@@ -10,10 +10,14 @@ body {
   width: 300px;
 }
 
+#current_wallpaper {
+  display: block;
+  margin-bottom: 1rem;
+}
+
 #current_wallpaper img {
   width: 100%;
   min-height: 169px;
   height: auto;
   border: 1px gray solid;
-  margin-bottom: 1rem;
 }

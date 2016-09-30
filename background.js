@@ -15,7 +15,8 @@ Backgroundit.config = {
     wallpaper_settings: {
       blur: 5,
       opacity: 40,
-      display: "block"
+      display: "block",
+      freeze: "1"
     }
   }
 }
@@ -67,6 +68,8 @@ var actions = {
     $.extend(Backgroundit.config.wallpaper_settings, params.wallpaper_settings);
     // updated: true.. I don't know why :D
     Backgroundit.config.save_settings(params, function() {
+      Backgroundit.wallpaper_collection.frozen = Backgroundit.config.wallpaper_settings.freeze == "1";
+
       response({
         updated: true,
         wallpaper_settings: Backgroundit.config.wallpaper_settings
@@ -78,7 +81,9 @@ var actions = {
 Backgroundit.WallpaperCollection = function() {
   var _this = this;
   _this.source = Sources.Wallhaven;
+  _this.frozen = false
   _this.list   = [];
+  _this.current_wallpaper = "";
 
   _this.fetch = function(callback) {
     _this.source.fetch({
@@ -95,7 +100,10 @@ Backgroundit.WallpaperCollection = function() {
   }
 
   _this.get_one = function() {
-    return _this.list[_generate_random_int()]
+    if (!_this.frozen) {
+      _this.current_wallpaper = _this.list[_generate_random_int()];
+    }
+    return _this.current_wallpaper;
   }
 }
 Wallhaven.home_url  = "https://alpha.wallhaven.cc";

@@ -18,8 +18,13 @@
         <div class="col-12">
           <form id="wallpaper_settings_form">
             <input type="hidden" name="wallpaper_settings[display]" value="none">
+            <input type="hidden" name="wallpaper_settings[freeze]" value=false>
+
             <input tabindex="-1" id="wallpaper_settings_display" type="checkbox" name="wallpaper_settings[display]" value="block">
             <label for="wallpaper_settings_display">Display</label>
+
+            <input tabindex="-1" id="wallpaper_settings_freeze" type="checkbox" name="wallpaper_settings[freeze]" value="1">
+            <label for="wallpaper_settings_freeze">Freeze</label>
           </form>
         </div>
       </div>

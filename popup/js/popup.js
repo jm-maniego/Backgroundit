@@ -27,7 +27,7 @@
       $current_wallpaper.attr('href', current_wallpaper.source_url);
       $('img', $current_wallpaper).attr('src', current_wallpaper.url);
       $('#wallpaper_settings_display').attr('checked', settings.display == "block");
-
+      $('#wallpaper_settings_freeze').attr('checked', settings.freeze == "1");
       $('#blur-slider').slider(slider_options({
         value: settings.blur
       }))
