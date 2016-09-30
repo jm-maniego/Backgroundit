@@ -143,7 +143,7 @@ Wallhaven.source = function() {
     "/random"
   ]
   var DEFAULTS = {
-    url: 0
+    url: 1
   }
   var PATTERNS = {
     url: /\.cc\/wallpaper\/([0-9]*)/
@@ -175,7 +175,7 @@ Wallhaven.source = function() {
   }
 
   _this.save_settings = function(settings) {
-    _this.url_code = settings.url;
+    // _this.url_code = settings.url;
     _this.url = HOME_URL + PATHS[_this.url_code];
     _this.q = settings.q;
     _this.categories = new Wallhaven.parameter('categories', settings.categories)
