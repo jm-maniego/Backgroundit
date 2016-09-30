@@ -16,7 +16,7 @@ Backgroundit.config = {
       blur: 5,
       opacity: 40,
       display: "block",
-      freeze: "1"
+      freeze: "0"
     }
   }
 }
