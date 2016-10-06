@@ -110,11 +110,11 @@ Wallhaven.home_url  = "https://alpha.wallhaven.cc";
 Wallhaven.wallpaper = function(id) {
   var _this = this;
   var IMG_PREFIX = "http://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-";
-  var IMG_EXT    = ".jpg";
+  var EXT        = { jpg: ".jpg", png: ".png" };
   var SOURCE_URL = Wallhaven.home_url + "/wallpaper/";
 
   _this.id  = id;
-  _this.url = IMG_PREFIX + _this.id + IMG_EXT;;
+  _this.url = IMG_PREFIX + _this.id + EXT.jpg;
   _this.source_url = SOURCE_URL + _this.id;
 
   // var _init = function() {
@@ -151,7 +151,7 @@ Wallhaven.source = function() {
     "/random"
   ]
   var DEFAULTS = {
-    url: 1
+    url: 0
   }
   var PATTERNS = {
     url: /\.cc\/wallpaper\/([0-9]*)/
@@ -168,6 +168,7 @@ Wallhaven.source = function() {
     sketchy: "1",
     nsfw: "0"
   })
+  _this.sorting = "random";
 
   var _init = function() {
     _this.url = HOME_URL + PATHS[_this.url_code];
@@ -178,7 +179,8 @@ Wallhaven.source = function() {
       url: _this.url_code,
       q: _this.q,
       categories: _this.categories.values,
-      purity: _this.purity.values
+      purity: _this.purity.values,
+      sorting: _this.sorting
     }
   }
 
@@ -188,6 +190,7 @@ Wallhaven.source = function() {
     _this.q = settings.q;
     _this.categories = new Wallhaven.parameter('categories', settings.categories)
     _this.purity = new Wallhaven.parameter('purity', settings.purity)
+    // _this.sorting = settings.sorting;
   }
 
   _this.fetch = function(options) {
@@ -211,7 +214,9 @@ Wallhaven.source = function() {
 
     $.ajax({
       url: _this.url,
-      data: $.extend({q: _this.q}, _this.categories.to_param(), _this.purity.to_param()),
+      data: $.extend( {q: _this.q, sorting: _this.sorting},
+                      _this.categories.to_param(),
+                      _this.purity.to_param()),
       type: "GET",
       success: function(response) {
         console.log("FETCH SUCCESS YAY!");
