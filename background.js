@@ -109,12 +109,13 @@ Backgroundit.WallpaperCollection = function() {
 Wallhaven.home_url  = "https://alpha.wallhaven.cc";
 Wallhaven.wallpaper = function(id) {
   var _this = this;
-  var IMG_PREFIX = "http://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-";
+  var IMG_PREFIX = "https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-";
   var EXT        = { jpg: ".jpg", png: ".png" };
   var SOURCE_URL = Wallhaven.home_url + "/wallpaper/";
 
   _this.id  = id;
   _this.url = IMG_PREFIX + _this.id + EXT.jpg;
+  _this.fallback_url = IMG_PREFIX + _this.id + EXT.png;
   _this.source_url = SOURCE_URL + _this.id;
 
   // var _init = function() {

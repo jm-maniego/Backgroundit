@@ -15,9 +15,8 @@ body {
   margin-bottom: 1rem;
 }
 
-#current_wallpaper img {
+#current_wallpaper img, #current_wallpaper object {
   width: 100%;
   min-height: 169px;
   height: auto;
-  border: 1px gray solid;
 }

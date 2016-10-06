@@ -8,6 +8,7 @@ Backgroundit.WallpaperModel = function() {
     var wallpaper = response.wallpaper;
     _this.url = wallpaper.url;
     _this.source_url = wallpaper.source_url;
+    _this.fallback_url = wallpaper.fallback_url;
   }
 
   _this.fetch = function(callback) {
@@ -65,7 +66,7 @@ Backgroundit.WallpaperView = function(model) {
     var opacity = wallpaper_settings.opacity/100;
 
     _this.$el.css({
-      "background":     "url("+ _this.model.url +") fixed ",
+      "background":     "url("+ _this.model.url +"), url("+ _this.model.fallback_url +") fixed ",
       "-webkit-filter": "blur("+ wallpaper_settings.blur +"px)",
       "opacity":        opacity,
       "display":        wallpaper_settings.display,
