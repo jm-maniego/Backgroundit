@@ -18,6 +18,19 @@ Backgroundit.config = {
       display: "block",
       freeze: "0"
     }
+  },
+  update_wallpaper_settings: function(settings, callback) {
+    console.log('Updating wallpaper settings...');
+    $.extend(Backgroundit.config.wallpaper_settings, settings);
+
+    Backgroundit.config.save_settings({wallpaper_settings: settings}, function() {
+      Backgroundit.wallpaper_collection.frozen = Backgroundit.config.wallpaper_settings.freeze == "1";
+
+      callback && callback({
+        updated: true,
+        wallpaper_settings: Backgroundit.config.wallpaper_settings
+      });
+    });
   }
 }
 Backgroundit.config.wallpaper_settings = Backgroundit.config.defaults.wallpaper_settings
@@ -33,8 +46,11 @@ chrome.runtime.onMessage.addListener(function(request, sender, response) {
 var actions = {
   get_wallpaper: function(params, response) {
     console.log('Getting wallpaper...');
+    var current_wallpaper = Backgroundit.wallpaper_collection.get_one();
+    Backgroundit.config.save_settings({current_wallpaper_id: current_wallpaper.id});
+
     response({
-      wallpaper: Backgroundit.wallpaper_collection.get_one(),
+      wallpaper: current_wallpaper,
       settings: Backgroundit.config.wallpaper_settings
     });
   },
@@ -64,17 +80,7 @@ var actions = {
     })
   },
   update_wallpaper_settings: function(params, response) {
-    console.log('Updating wallpaper settings...');
-    $.extend(Backgroundit.config.wallpaper_settings, params.wallpaper_settings);
-    // updated: true.. I don't know why :D
-    Backgroundit.config.save_settings(params, function() {
-      Backgroundit.wallpaper_collection.frozen = Backgroundit.config.wallpaper_settings.freeze == "1";
-
-      response({
-        updated: true,
-        wallpaper_settings: Backgroundit.config.wallpaper_settings
-      });
-    });
+    Backgroundit.config.update_wallpaper_settings(params.wallpaper_settings, response)
   }
 }
 
@@ -100,10 +106,16 @@ Backgroundit.WallpaperCollection = function() {
   }
 
   _this.get_one = function() {
-    if (!_this.frozen) {
+    if (!_this.frozen || !_this.current_wallpaper) {
       _this.current_wallpaper = _this.list[_generate_random_int()];
     }
     return _this.current_wallpaper;
+  }
+
+  _this.set_wallpaper = function(id) {
+    if (id) {
+      _this.current_wallpaper = new _this.source.model(id);
+    }
   }
 }
 Wallhaven.home_url  = "https://alpha.wallhaven.cc";
@@ -188,9 +200,11 @@ Wallhaven.source = function() {
   _this.save_settings = function(settings) {
     // _this.url_code = settings.url;
     _this.url = HOME_URL + PATHS[_this.url_code];
-    _this.q = settings.q;
-    _this.categories = new Wallhaven.parameter('categories', settings.categories)
-    _this.purity = new Wallhaven.parameter('purity', settings.purity)
+    $.extend(_this, {
+      q: settings.q,
+      categories: new Wallhaven.parameter('categories', settings.categories),
+      purity: new Wallhaven.parameter('purity', settings.purity)
+    })
     // _this.sorting = settings.sorting;
   }
 
@@ -236,4 +250,12 @@ Wallhaven.source = function() {
 
 Sources.Wallhaven = new Wallhaven.source;
 Backgroundit.wallpaper_collection = new Backgroundit.WallpaperCollection();
-Backgroundit.wallpaper_collection.fetch()
+
+chrome.storage.local.get(function(settings) {
+  var {wallpaper_settings, source_settings, current_wallpaper_id} = settings;
+  Backgroundit.wallpaper_collection.source.save_settings(source_settings);
+  Backgroundit.config.update_wallpaper_settings(wallpaper_settings);
+  Backgroundit.wallpaper_collection.set_wallpaper(current_wallpaper_id);
+
+  Backgroundit.wallpaper_collection.fetch();
+});
