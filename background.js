@@ -47,12 +47,14 @@ var actions = {
   get_wallpaper: function(params, response) {
     console.log('Getting wallpaper...');
     var current_wallpaper = Backgroundit.wallpaper_collection.get_one();
-    Backgroundit.config.save_settings({current_wallpaper_id: current_wallpaper.id});
+    if (current_wallpaper) {
+      Backgroundit.config.save_settings({current_wallpaper_id: current_wallpaper.id});
 
-    response({
-      wallpaper: current_wallpaper,
-      settings: Backgroundit.config.wallpaper_settings
-    });
+      response({
+        wallpaper: current_wallpaper,
+        settings: Backgroundit.config.wallpaper_settings
+      });
+    }
   },
   save_settings: function(params, response) {
     console.log('Saving settings...');
@@ -106,7 +108,7 @@ Backgroundit.WallpaperCollection = function() {
   }
 
   _this.get_one = function() {
-    if (!_this.frozen || !_this.current_wallpaper) {
+    if (!_this.frozen) {
       _this.current_wallpaper = _this.list[_generate_random_int()];
     }
     return _this.current_wallpaper;
@@ -200,7 +202,7 @@ Wallhaven.source = function() {
   _this.save_settings = function(settings) {
     // _this.url_code = settings.url;
     _this.url = HOME_URL + PATHS[_this.url_code];
-    $.extend(_this, {
+    $.extend(_this, settings && {
       q: settings.q,
       categories: new Wallhaven.parameter('categories', settings.categories),
       purity: new Wallhaven.parameter('purity', settings.purity)
