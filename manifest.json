@@ -4,7 +4,7 @@
   "name": "Backgroundit",
   "description": "Wallpapers everywhere!!",
 
-  "version": "1.5",
+  "version": "1.6",
 
   "permissions": [
     "tabs",
