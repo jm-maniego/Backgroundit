@@ -4,7 +4,7 @@
   "name": "Backgroundit",
   "description": "Wallpapers everywhere!!",
 
-  "version": "1.6",
+  "version": "1.7",
 
   "permissions": [
     "tabs",
@@ -22,8 +22,7 @@
       "lib/jquery.js",
       "common.js",
       "background.js"
-    ],
-    "persistent": false
+    ]
   },
   "browser_action": {
     "default_popup": "popup/popup.html",
