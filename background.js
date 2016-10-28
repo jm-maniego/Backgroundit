@@ -23,7 +23,7 @@ Backgroundit.config = {
     console.log('Updating wallpaper settings...');
     $.extend(Backgroundit.config.wallpaper_settings, settings);
 
-    Backgroundit.config.save_settings({wallpaper_settings: settings}, function() {
+    Backgroundit.config.save_settings({wallpaper_settings: Backgroundit.config.wallpaper_settings}, function() {
       Backgroundit.wallpaper_collection.frozen = Backgroundit.config.wallpaper_settings.freeze == "1";
 
       callback && callback({
@@ -48,8 +48,6 @@ var actions = {
     console.log('Getting wallpaper...');
     var current_wallpaper = Backgroundit.wallpaper_collection.get_one();
     if (current_wallpaper) {
-      Backgroundit.config.save_settings({current_wallpaper_id: current_wallpaper.id});
-
       response({
         wallpaper: current_wallpaper,
         settings: Backgroundit.config.wallpaper_settings
@@ -95,8 +93,8 @@ Backgroundit.WallpaperCollection = function() {
 
   _this.fetch = function(callback) {
     _this.source.fetch({
-      success: function(wallpapers) {
-        _this.list = wallpapers;
+      success: function(wallpaper_ids) {
+        _this.list = wallpaper_ids;
         callback && callback();
       }
     });
@@ -107,16 +105,22 @@ Backgroundit.WallpaperCollection = function() {
     return Math.floor(Math.random() * (max - min)) + min;
   }
 
+  _this.freeze = function() {
+    Backgroundit.config.wallpaper_settings.freeze = "1"
+    _this.frozen = true
+  }
+
   _this.get_one = function() {
     if (!_this.frozen) {
-      _this.current_wallpaper = _this.list[_generate_random_int()];
+      _this.set_wallpaper(_this.list[_generate_random_int()], true);
     }
     return _this.current_wallpaper;
   }
 
-  _this.set_wallpaper = function(id) {
-    if (id) {
-      _this.current_wallpaper = new _this.source.model(id);
+  _this.set_wallpaper = function(id, save=false) {
+    _this.current_wallpaper = new _this.source.model(id);
+    if (save) {
+      Backgroundit.config.save_settings({current_wallpaper_id: id});
     }
   }
 }
@@ -220,8 +224,7 @@ Wallhaven.source = function() {
 
       $(data).find('.preview').map(function() {
         wallpaper_id = _get_wallpaper_id(this.href);
-        wallpaper    = new _this.model(wallpaper_id);
-        wallpapers.push(wallpaper);
+        wallpapers.push(wallpaper_id);
       })
 
       return {
