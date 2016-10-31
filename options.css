@@ -1,5 +1,7 @@
 html, body {
   padding: 0;
+  max-width: 400px;
+  height: 400px;
 }
 
 .full {
@@ -12,4 +14,12 @@ input[type=text] {
 
 .input {
   padding-bottom: 1rem;
+}
+
+input[type="radio"] {
+  vertical-align: text-bottom;
+}
+
+input[type="checkbox"] {
+  vertical-align: text-top;
 }

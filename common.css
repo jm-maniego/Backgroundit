@@ -1,3 +1,29 @@
 label {
   cursor: pointer;
 }
+
+/* Simulate chrome style */
+div[contenteditable] {
+  border: 1px rgb(191, 191, 191) solid;
+  padding: 1em;
+  border-radius: 2px;
+  font: inherit;
+  outline: none;
+  cursor: text;
+  line-height: 1.5em;
+}
+
+[contentEditable]:empty:not(:focus)::before{
+  content: attr(data-ph);
+  opacity: 0.5;
+}
+
+[contentEditable]:focus {
+  transition: border-color 200ms;
+  border-color: rgb(77, 144, 254);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+  padding-top: 0;
+}

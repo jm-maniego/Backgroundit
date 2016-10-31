@@ -9,48 +9,74 @@
   <body>
     <div class="fluid-container">
       <form id="backgroundit-form">
+        <h3>Source</h3>
         <div class="row">
           <div class="col-12">
-            <input id="query-keyword" type="text" name="source_settings[q]" placeholder="kitten" class="full">
+            <p>
+              <input data-visible-for="source-wallhaven" id="source-wallhaven" type="radio" name="source" value="wallhaven">
+              <label for="source-wallhaven">Wallhaven</label>
+            </p>
+            <p>
+              <input data-visible-for="source-custom" id="source-custom" type="radio" name="source" value="custom">
+              <label for="source-custom">Custom</label>
+            </p>
+          </div>
+        </div>
+        <div data-visible-for="source-wallhaven" data-name="source">
+          <div class="row">
+            <div class="col-12">
+              <input id="query-keyword" type="text" name="source_settings[q]" placeholder="kitten" class="full">
+            </div>
+          </div>
+
+          <div class="row">
+            <input type="hidden" name="source_settings[categories][general]" value="0">
+            <input type="hidden" name="source_settings[categories][anime]" value="0">
+            <input type="hidden" name="source_settings[categories][people]" value="0">
+
+            <div class="col-6">
+            <h4>Categories</h4>
+              <div class="input">
+                <input id="categories_general" type="checkbox" name="source_settings[categories][general]" value="1" checked>
+                <label for="categories_general" >General</label>
+              </div>
+              <div class="input">
+                <input id="categories_anime" type="checkbox" name="source_settings[categories][anime]" value="1" checked>
+                <label for="categories_anime" >Anime</label>
+              </div>
+              <div class="input">
+                <input id="categories_people" type="checkbox" name="source_settings[categories][people]" value="1">
+                <label for="categories_people" >People</label>
+              </div>
+            </div>
+            <div class="col-6">
+            <h4>Purity</h4>
+              <input type="hidden" name="source_settings[purity][sfw]" value="0">
+              <input type="hidden" name="source_settings[purity][sketchy]" value="0">
+              <input type="hidden" name="source_settings[purity][nsfw]" value="0">
+              <div class="input">
+                <input id="purity_sfw" type="checkbox" name="source_settings[purity][sfw]" value="1" checked>
+                <label for="purity_sfw" >SFW</label>
+              </div>
+              <div class="input">
+                <input id="purity_sketchy" type="checkbox" name="source_settings[purity][sketchy]" value="1" checked>
+                <label for="purity_sketchy" >Sketchy</label>
+              </div>
+              <div class="input">
+                <input id="purity_nsfw" type="checkbox" name="source_settings[purity][nsfw]" value="1">
+                <label for="purity_nsfw" >NSFW</label>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="row">
-          <input type="hidden" name="source_settings[categories][general]" value="0">
-          <input type="hidden" name="source_settings[categories][anime]" value="0">
-          <input type="hidden" name="source_settings[categories][people]" value="0">
-
-          <div class="col-6">
-          <h4>Categories</h4>
-            <div class="input">
-              <input id="categories_general" type="checkbox" name="source_settings[categories][general]" value="1">
-              <label for="categories_general" >General</label>
-            </div>
-            <div class="input">
-              <input id="categories_anime" type="checkbox" name="source_settings[categories][anime]" value="1">
-              <label for="categories_anime" >Anime</label>
-            </div>
-            <div class="input">
-              <input id="categories_people" type="checkbox" name="source_settings[categories][people]" value="1">
-              <label for="categories_people" >People</label>
-            </div>
-          </div>
-          <div class="col-6">
-          <h4>Purity</h4>
-            <input type="hidden" name="source_settings[purity][sfw]" value="0">
-            <input type="hidden" name="source_settings[purity][sketchy]" value="0">
-            <input type="hidden" name="source_settings[purity][nsfw]" value="0">
-            <div class="input">
-              <input id="purity_sfw" type="checkbox" name="source_settings[purity][sfw]" value="1">
-              <label for="purity_sfw" >SFW</label>
-            </div>
-            <div class="input">
-              <input id="purity_sketchy" type="checkbox" name="source_settings[purity][sketchy]" value="1">
-              <label for="purity_sketchy" >Sketchy</label>
-            </div>
-            <div class="input">
-              <input id="purity_nsfw" type="checkbox" name="source_settings[purity][nsfw]" value="1">
-              <label for="purity_nsfw" >NSFW</label>
+        <div data-visible-for="source-custom" data-name="source">
+          <div class="row">
+            <div class="col-12">
+              <h4>Comma-separated values</h4>
+              <input id="source_settings_collection" type="hidden" name="source_settings[data]">
+              <div data-content-for="source_settings_collection" contenteditable data-ph="https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-450488.jpg, https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-402702.jpg, https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-320039.jpg
+              "></div>
             </div>
           </div>
         </div>
@@ -61,9 +87,11 @@
             <span id="notification" style="display:none"></span>
           </div>
         </div>
-        <div class="note">Source: Wallhaven ( <a href="http://alpha.wallhaven.cc" target="_blank">alpha.wallhaven.cc</a> )</div>
-        <div>Twitter: <a href="https://twitter.com/@jmLeGreat">@jmLeGreat</a></div>
       </form>
+
+      <div class="note">
+        <div>Developer: <a href="https://jm-maniego.github.io">jm-maniego</a></div>
+      </div>
     </div>
 
     <script src="lib/jquery.js"></script>

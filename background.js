@@ -1,6 +1,7 @@
 var Backgroundit = window.Backgroundit || {};
 var Sources = {};
 var Wallhaven = {};
+var CustomCollection = {}
 Backgroundit.debug = {
   log_settings: function() {
     chrome.storage.local.get(function(settings){console.log(settings)});
@@ -12,6 +13,7 @@ Backgroundit.config = {
     chrome.storage.local.set(settings, callback);
   },
   defaults: {
+    source: "wallhaven",
     wallpaper_settings: {
       blur: 5,
       opacity: 40,
@@ -33,7 +35,7 @@ Backgroundit.config = {
     });
   }
 }
-Backgroundit.config.wallpaper_settings = Backgroundit.config.defaults.wallpaper_settings
+$.extend(Backgroundit.config, Backgroundit.config.defaults)
 
 chrome.runtime.onMessage.addListener(function(request, sender, response) {
   var params = {}
@@ -56,16 +58,20 @@ var actions = {
   },
   save_settings: function(params, response) {
     console.log('Saving settings...');
+    var {source, source_settings} = params;
     Backgroundit.config.save_settings(params, function() {
       console.log('Saving settings... done.');
-      Backgroundit.wallpaper_collection.source.save_settings(params.source_settings);
+      Backgroundit.wallpaper_collection.set_source(source);
+      Backgroundit.config.source_settings = source_settings;
+      Backgroundit.wallpaper_collection.source.save_settings(source_settings);
       Backgroundit.wallpaper_collection.fetch(response);
     });
   },
   get_settings: function(params, response) {
     response({
       settings: {
-        source_settings: Backgroundit.wallpaper_collection.source.get_settings()
+        source: Backgroundit.config.source,
+        source_settings: Backgroundit.config.source_settings
       }
     })
   },
@@ -105,6 +111,11 @@ Backgroundit.WallpaperCollection = function() {
     return Math.floor(Math.random() * (max - min)) + min;
   }
 
+  _this.set_source = function(source_str) {
+    Backgroundit.config.source = source_str;
+    this.source = Sources.mapping[source_str];
+  }
+
   _this.freeze = function() {
     Backgroundit.config.wallpaper_settings.freeze = "1"
     _this.frozen = true
@@ -117,10 +128,10 @@ Backgroundit.WallpaperCollection = function() {
     return _this.current_wallpaper;
   }
 
-  _this.set_wallpaper = function(id, save=false) {
-    _this.current_wallpaper = new _this.source.model(id);
+  _this.set_wallpaper = function(id_or_url, save=false) {
+    _this.current_wallpaper = new _this.source.model(id_or_url);
     if (save) {
-      Backgroundit.config.save_settings({current_wallpaper_id: id});
+      Backgroundit.config.save_settings({current_wallpaper: id_or_url});
     }
   }
 }
@@ -253,14 +264,54 @@ Wallhaven.source = function() {
   return _this;
 };
 
+// ES6 Practice
+CustomCollection.wallpaper = class {
+  constructor(url) {
+    this.url = url;
+    this.fallback_url = "";
+    this.source_url = url;
+  }
+}
+
+CustomCollection.source = class {
+  constructor(props={}) {
+    this.model = CustomCollection.wallpaper;
+    this.data = props.data;
+    this.collection = [];
+  }
+  parsed_data() {
+    return this.data.trim().replace(/\s/g, '').split(',');
+  }
+  save_settings(settings) {
+    this.data = settings.data;
+    this.collection = this.parsed_data();
+  }
+  get_settings() {
+    return {
+      data: this.data,
+      collection: this.collection
+    }
+  }
+  fetch(options) {
+    options.success.call(this, this.collection);
+  }
+}
+
 Sources.Wallhaven = new Wallhaven.source;
+Sources.CustomCollection = new CustomCollection.source;
+Sources.mapping = {
+  wallhaven: Sources.Wallhaven,
+  custom:    Sources.CustomCollection
+};
 Backgroundit.wallpaper_collection = new Backgroundit.WallpaperCollection();
 
 chrome.storage.local.get(function(settings) {
-  var {wallpaper_settings, source_settings, current_wallpaper_id} = settings;
+  var {source, wallpaper_settings, source_settings, current_wallpaper} =
+    $.extend(Backgroundit.config, settings);
+  Backgroundit.wallpaper_collection.set_source(source);
   Backgroundit.wallpaper_collection.source.save_settings(source_settings);
   Backgroundit.config.update_wallpaper_settings(wallpaper_settings);
-  Backgroundit.wallpaper_collection.set_wallpaper(current_wallpaper_id);
+  Backgroundit.wallpaper_collection.set_wallpaper(current_wallpaper);
 
   Backgroundit.wallpaper_collection.fetch();
 });
