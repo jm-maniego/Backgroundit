@@ -20,7 +20,6 @@
 
       $('#source-' + source).prop('checked', true).trigger('change');
       $('#url-' + source_settings.url).attr('checked', true);
-      debugger
       $('[data-content-for=source_settings_collection]').text(source_settings.data).trigger('keyup');
       $('#query-keyword').val(source_settings.q).text(source_settings.q);
       $.each({categories: source_settings.categories, purity: source_settings.purity}, function(filter_key, values) {
