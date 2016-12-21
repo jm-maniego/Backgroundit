@@ -40,6 +40,14 @@
       "matches": ["<all_urls>"],
       "js": ["lib/jquery.js", "common.js", "content_scripts/js/main.js"],
       "css": ["content_scripts/css/main.css"]
+    },
+    {
+      "matches": [
+        "*://alpha.wallhaven.cc/*",
+        "*://wallhaven.cc/*"
+      ],
+      "css": ["content_scripts/css/wallhaven.css"],
+      "js": ["lib/jquery.js", "content_scripts/js/wallhaven.js"]
     }
   ]
 }

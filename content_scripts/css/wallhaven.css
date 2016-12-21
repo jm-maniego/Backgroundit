@@ -1,0 +1,38 @@
+.bgdit-dropdown {
+  position: absolute;
+  right: 15px !important;
+  line-height: inherit;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+  background-color: #666 !important;
+}
+
+.bgdit-dropdown {
+  /*position: relative;*/
+}
+
+.bgdit-dropdown-menu {
+  position: absolute;
+  top: 1.5rem;
+  border: 1px #CCC solid;
+  border-radius: 2px;
+  padding: 5px 0;
+  list-style: none;
+  width: 120px;
+  background-color: white;
+  color: #333;
+  text-shadow: none;
+  display: none;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.bgdit-dropdown-menu li {
+  padding: 5px 0;
+  margin: 0;
+  width: 100%;
+}
+
+.bgdit-dropdown-menu li:hover {
+  background-color: #CCC;
+}

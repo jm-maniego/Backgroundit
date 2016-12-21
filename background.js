@@ -57,6 +57,12 @@ var actions = {
       });
     }
   },
+  set_wallpaper: function(params, response) {
+    Backgroundit.wallpaper_collection.set_source(params.source);
+    Backgroundit.wallpaper_collection.set_wallpaper(params.id, true);
+    Backgroundit.wallpaper_collection.freeze();
+    response({success: true});
+  },
   save_settings: function(params, response) {
     console.log('Saving settings...');
     var {source, source_settings} = params;
@@ -192,9 +198,9 @@ Wallhaven.source = function() {
   var DEFAULTS = {
     url: 0
   }
-  var PATTERNS = {
-    url: /\.cc\/wallpaper\/([0-9]*)/
-  }
+  // var PATTERNS = {
+  //   url: /\.cc\/wallpaper\/([0-9]*)/
+  // }
   _this.url_code = DEFAULTS.url;
   _this.q = 'kitten';
   _this.categories = new Wallhaven.parameter('categories', {
@@ -238,12 +244,12 @@ Wallhaven.source = function() {
     var _parse_data = function(data) {
       var wallpaper_id, wallpaper;
       var wallpapers = [];
-      var _get_wallpaper_id = function(url) {
-        return url.match(PATTERNS.url)[1]
-      }
+      // var _get_wallpaper_id = function(url) {
+      //   return url.match(PATTERNS.url)[1]
+      // }
 
-      $(data).find('.preview').map(function() {
-        wallpaper_id = _get_wallpaper_id(this.href);
+      $(data).find('figure').map(function() {
+        wallpaper_id = $(this).data('wallpaper-id');
         wallpapers.push(wallpaper_id);
       })
 
