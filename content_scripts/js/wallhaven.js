@@ -45,19 +45,42 @@ Backgroundit.DropdownButton = class {
 }
 
 Backgroundit.FigureCollection = class {
+  constructor(props) {
+    this.$el = $('figure:not([data-bgdit-rendered])')
+  }
   render() {
-    var _$set_bg_btn, $this;
-    this.$el = $("figure");
+    let figure;
     this.$el.each(function() {
-      $this = $(this);
-      _$set_bg_btn = new Backgroundit.DropdownButton();
-      _$set_bg_btn.wallpaper_id = $this.data('wallpaper-id');
-      $this.append(_$set_bg_btn.render().$el);
+      figure = new Backgroundit.FigureItem(this);
+      figure.render();
     })
+  }
+}
+
+Backgroundit.FigureItem = class {
+  constructor(id) {
+    this.$el = $(id);
+  }
+
+  render() {
+    let _$set_bg_btn = new Backgroundit.DropdownButton();
+    _$set_bg_btn.wallpaper_id = this.$el.data('wallpaper-id');
+    this.$el.append(_$set_bg_btn.render().$el);
+    this.$el.attr('data-bgdit-rendered', true);
+    return this;
   }
 }
 
 $(function() {
   var figureCollection = new Backgroundit.FigureCollection();
   figureCollection.render();
+})
+
+window.addEventListener("message", function(e) {
+  if (event.data.type == "from_content") {
+    if (event.data.id == "page_added") {
+      var figureCollection = new Backgroundit.FigureCollection();
+      figureCollection.render();
+    }
+  }
 })
