@@ -49,6 +49,7 @@ var actions = {
   get_wallpaper: function(params, response) {
     console.log('Getting wallpaper...');
     var current_wallpaper = Backgroundit.wallpaper_collection.get_one();
+    current_wallpaper.get_url = current_wallpaper.generate_url(); // shit hack for message passing
     if (current_wallpaper) {
       response({
         wallpaper: current_wallpaper,
@@ -135,23 +136,31 @@ Backgroundit.WallpaperCollection = function() {
     }
   }
 }
+
+class BackgrounditWallpaper {
+  constructor(url) {
+    this.url = url;
+    this.fallback_url = null;
+    this.source_url = url;
+  }
+
+  generate_url() {
+    return "url(" + [this.url, this.fallback_url].filter(x=>x).join("), url(") + ")"
+  }
+}
+
 Wallhaven.home_url  = "https://alpha.wallhaven.cc";
-Wallhaven.wallpaper = function(id) {
-  var _this = this;
-  var IMG_PREFIX = "https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-";
-  var EXT        = { jpg: ".jpg", png: ".png" };
-  var SOURCE_URL = Wallhaven.home_url + "/wallpaper/";
 
-  _this.id  = id;
-  _this.url = IMG_PREFIX + _this.id + EXT.jpg;
-  _this.fallback_url = IMG_PREFIX + _this.id + EXT.png;
-  _this.source_url = SOURCE_URL + _this.id;
-
-  // var _init = function() {
-  // }
-
-  // _init();
-  return this;
+Wallhaven.wallpaper = class extends BackgrounditWallpaper {
+  constructor(id) {
+    super(id);
+    this.id  = id;
+    this._img_prefix = "https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-";
+    this._ext = { jpg: ".jpg", png: ".png" };
+    this.url = this._img_prefix + this.id + this._ext.jpg;
+    this.fallback_url = this._img_prefix + this.id + this._ext.png;
+    this.source_url = Wallhaven.home_url + "/wallpaper/" + this.id;
+  }
 }
 
 Wallhaven.parameter = function(key, values) {
@@ -264,13 +273,7 @@ Wallhaven.source = function() {
   return _this;
 };
 
-// ES6 Practice
-CustomCollection.wallpaper = class {
-  constructor(url) {
-    this.url = url;
-    this.fallback_url = "";
-    this.source_url = url;
-  }
+CustomCollection.wallpaper = class extends BackgrounditWallpaper {
 }
 
 CustomCollection.source = class {
