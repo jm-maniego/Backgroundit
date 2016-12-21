@@ -27,3 +27,13 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
   padding-top: 0;
 }
+
+.note-warning {
+  color: red;
+}
+
+[class*='note-'] {
+  font-weight: normal;
+  font-size: 12px;
+  opacity: .5;
+}

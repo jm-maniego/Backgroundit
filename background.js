@@ -15,7 +15,7 @@ Backgroundit.config = {
   defaults: {
     source: "wallhaven",
     wallpaper_settings: {
-      blur: 5,
+      blur: 0,
       opacity: 40,
       display: "block",
       freeze: "0"
