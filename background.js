@@ -58,10 +58,17 @@ var actions = {
     }
   },
   set_wallpaper: function(params, response) {
-    Backgroundit.wallpaper_collection.set_source(params.source);
-    Backgroundit.wallpaper_collection.set_wallpaper(params.id, true);
-    Backgroundit.wallpaper_collection.freeze();
-    response({success: true});
+    let {source, id} = params;
+    if (!id) {
+      response({success: false});
+      return;
+    }
+    Backgroundit.config.save_settings({source: source}, function() {
+      Backgroundit.wallpaper_collection.set_source(source);
+      Backgroundit.wallpaper_collection.set_wallpaper(id, true);
+      Backgroundit.wallpaper_collection.freeze();
+      response({success: true});
+    })
   },
   save_settings: function(params, response) {
     console.log('Saving settings...');

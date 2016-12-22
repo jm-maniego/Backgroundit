@@ -32,10 +32,7 @@ Backgroundit.DropdownButton = class {
     $backgroundit.click(function(e) {
       e.preventDefault();
       let params = {id: _this.wallpaper_id, source: 'wallhaven'};
-      chrome.runtime.sendMessage({action: 'set_wallpaper', params: params}, function(response) {
-        if (response.success) {
-          alert('saved!');
-        }
+      Backgroundit.util.set_wallpaper(params, function() {
         _this.hideMenu();
       });
 
@@ -75,7 +72,7 @@ $(function() {
   var figureCollection = new Backgroundit.FigureCollection();
   figureCollection.render();
 })
-
+// Copied from "Wallhaven Extender" chrome ext
 var observer = new MutationObserver(function(mutations) {
   mutations.forEach(function(mutation) {
     if (mutation.type === "childList") {

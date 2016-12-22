@@ -5,7 +5,7 @@ Backgroundit.WallpaperModel = function() {
   _this.url = '';
 
   var _parse_response = function(response) {
-    console.log(response);
+    // console.log(response);
     var wallpaper = response.wallpaper;
     _this.url = wallpaper.url;
     _this.source_url = wallpaper.source_url;
@@ -15,9 +15,9 @@ Backgroundit.WallpaperModel = function() {
   }
 
   _this.fetch = function(callback) {
-    console.log('Requesting wallpaper...')
+    // console.log('Requesting wallpaper...')
     chrome.runtime.sendMessage({action: 'get_wallpaper'}, function(response) {
-      console.log('Requesting wallpaper... done.')
+      // console.log('Requesting wallpaper... done.')
       _parse_response(response);
       _this.on_fetch(_this, response);
     })
@@ -80,7 +80,7 @@ Backgroundit.WallpaperView = function(model) {
   }
 
   _this.attach = function(wallpaper_settings) {
-    console.log('Attaching wallpaper...')
+    // console.log('Attaching wallpaper...')
     _this.update_styles(wallpaper_settings);
     _this.bind_events();
   }

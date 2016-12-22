@@ -1,0 +1,34 @@
+.sidebar-content .bgdit-dropdown-button {
+  width: 97%;
+  height: 38px;
+}
+
+.bgdit-dropdown-toggle {
+  background-color: transparent;
+}
+
+.bgdit-dropdown-button {
+  padding: 0 !important;
+}
+
+.bgdit-dropdown-button button {
+  background-color: transparent;
+  float: left;
+  position: relative;
+  font-size: 1.1em;
+  padding: 6px 12px;
+  cursor: pointer;
+  padding: 0 1em;
+  line-height: 38px;
+}
+
+.bgdit-dropdown-button > .bgdit-dropdown-toggle {
+  border-left: 1px solid rgba(255,255,255,.15);
+  box-shadow: -2px 0 0 -1px rgba(0,0,0,.4);
+  float: right;
+  padding: 0 .66em;
+}
+
+.bgdit-dropdown-button {
+  cursor: pointer;
+}
