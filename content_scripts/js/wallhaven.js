@@ -76,11 +76,20 @@ $(function() {
   figureCollection.render();
 })
 
-window.addEventListener("message", function(e) {
-  if (event.data.type == "from_content") {
-    if (event.data.id == "page_added") {
-      var figureCollection = new Backgroundit.FigureCollection();
-      figureCollection.render();
+var observer = new MutationObserver(function(mutations) {
+  mutations.forEach(function(mutation) {
+    if (mutation.type === "childList") {
+      if (mutation.addedNodes.length > 0) {
+        for (var i = 0; i < mutation.addedNodes.length; i++) {
+          var node = $(mutation.addedNodes[i]);
+
+          if (node.hasClass("thumb-listing-page")) {
+            var figureCollection = new Backgroundit.FigureCollection();
+            figureCollection.render();
+          }
+        }
+      }
     }
-  }
+  })
 })
+observer.observe(document.getElementById('thumbs'), {childList: true})
