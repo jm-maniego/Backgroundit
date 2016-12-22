@@ -5,10 +5,10 @@ Backgroundit.BackgrounditDropdownButton = class {
   }
   _template() {
     this.$el = $('<div class="button bgdit-dropdown-button">')
-    this.$caretDown = $('<button class="bgdit-dropdown-toggle"><i class="fa fa-fw fa-caret-down"></button>')
+    // this.$caretDown = $('<button class="bgdit-dropdown-toggle"><i class="fa fa-fw fa-caret-down"></button>')
     this.$name = $(`<button><i class="fa fa-fw fa-globe"></i> Backgroundit</button>`)
     this.$el.append(this.$name);
-    this.$el.append(this.$caretDown);
+    // this.$el.append(this.$caretDown);
   }
 
   render() {
