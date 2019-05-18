@@ -10,7 +10,7 @@ Backgroundit.debug = {
 
 Backgroundit.config = {
   save_settings: function(settings, callback) {
-    chrome.storage.local.set(settings, callback);
+    chrome.storage.local.set({ ...Backgroundit.config.defaults, ...settings }, callback);
   },
   defaults: {
     source: "wallhaven",

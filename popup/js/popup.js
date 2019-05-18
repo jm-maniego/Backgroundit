@@ -21,7 +21,7 @@
 
     chrome.runtime.sendMessage({action: 'show_popup'}, function(response) {
       var settings = response.settings.wallpaper_settings;
-      var current_wallpaper = response.current_wallpaper
+      var current_wallpaper = response.current_wallpaper;
       var $current_wallpaper = $('#current_wallpaper');
 
       $current_wallpaper.attr('href', current_wallpaper.source_url);

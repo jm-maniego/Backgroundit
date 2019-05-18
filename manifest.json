@@ -4,7 +4,7 @@
   "name": "Backgroundit",
   "description": "Wallpapers everywhere!!",
 
-  "version": "3.4",
+  "version": "3.5",
 
   "permissions": [
     "tabs",
@@ -21,7 +21,8 @@
     "scripts": [
       "lib/jquery.js",
       "common.js",
-      "background.js"
+      "background.js",
+      "lib/image_reader.js"
     ]
   },
   "browser_action": {
@@ -35,6 +36,7 @@
     "page": "options.html",
     "chrome_style": true
   },
+  "content_security_policy": "default-src 'unsafe-eval'; script-src 'self' 'unsafe-eval'; style-src 'unsafe-inline'; img-src blob: data: https://alpha.wallhaven.cc; connect-src https://alpha.wallhaven.cc; object-src https://alpha.wallhaven.cc https://wallpapers.wallhaven.cc",
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
